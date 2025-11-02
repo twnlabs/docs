@@ -128,29 +128,17 @@ servers:
     description: Production API
 security: []
 tags:
-  - name: Twins
+  - name: Blog
     description: |
-      ## 🤖 AI Twins API
+      ## 📝 Blog API
       
-      Access public AI twin data including metadata, social profiles, and statistics.
+      Access public blog posts and announcements.
       
-      **Use Cases:**
-      - Search twins by name, collection, or attributes
-      - Get detailed twin information
-      - Filter by collection tier (Gold, Silver, Bronze)
-      - Sort by rating, creation date, or name
-      
-  - name: Rewards
+  - name: Careers
     description: |
-      ## 💰 Rewards API
+      ## 💼 Careers API
       
-      Query iNFT holder rewards and distribution events.
-      
-      **Features:**
-      - Lifetime TWN earnings per twin
-      - Monthly and 30-day summaries
-      - Detailed reward event history
-      - Category-based breakdowns
+      List open positions and career opportunities at TWN Labs.
       
   - name: Collections
     description: |
@@ -169,23 +157,35 @@ tags:
       - Contract addresses
       - Collection statistics
       
-  - name: Blog
-    description: |
-      ## 📝 Blog API
-      
-      Access public blog posts and announcements.
-      
-  - name: Careers
-    description: |
-      ## 💼 Careers API
-      
-      List open positions and career opportunities at TWN Labs.
-      
   - name: Downloads
     description: |
       ## 📥 Downloads API
       
       Download public files including brand kits and documents.
+      
+  - name: Rewards
+    description: |
+      ## 💰 Rewards API
+      
+      Query iNFT holder rewards and distribution events.
+      
+      **Features:**
+      - Lifetime TWN earnings per twin
+      - Monthly and 30-day summaries
+      - Detailed reward event history
+      - Category-based breakdowns
+      
+  - name: Twins
+    description: |
+      ## 🤖 AI Twins API
+      
+      Access public AI twin data including metadata, social profiles, and statistics.
+      
+      **Use Cases:**
+      - Search twins by name, collection, or attributes
+      - Get detailed twin information
+      - Filter by collection tier (Gold, Silver, Bronze)
+      - Sort by rating, creation date, or name
 externalDocs:
   description: Full API Documentation and Developer Guide
   url: https://twnlabs.com/docs
@@ -274,9 +274,11 @@ components:
           description: Twin's nationality (ISO 3166-1 alpha-2)
           example: "JP"
         languages:
-          type: string
-          description: JSON array of supported languages
-          example: "[\"ja\"]"
+          type: array
+          items:
+            type: string
+          description: Array of supported languages
+          example: ["ja"]
         collection_type: 
           type: string
           enum: [gold, silver, bronze]
@@ -356,9 +358,10 @@ components:
           description: Number of shares
           example: 0
         rating: 
-          type: string
-          description: Average rating (decimal string)
-          example: "0.00"
+          type: number
+          format: float
+          description: Average rating (decimal)
+          example: 0.00
         created_at: 
           type: string
           description: Creation timestamp
@@ -1405,17 +1408,8 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/Error' }
               example:
-                - id: 1
-                  slug: "unlocking-digital-identity-from-web2-to-sovereign-infts"
-                  title: "Unlocking Digital Identity: From Web 2 Sign‑On to Sovereign iNFTs"
-                  excerpt: "Digital identity is shifting from Big Tech‑controlled SSO to self‑sovereign, interoperable iNFTs."
-                  category: "Identity"
-                  tags: ["SSI", "DID", "iNFT"]
-                  author: "TWN Labs Team"
-                  date: "2025-01-20"
-                  readTime: 10
-                  image: "/assets/blog/pictures/DigitalIdentity_Evolution.webp"
-                  file: "unlocking-digital-identity-from-web2-to-sovereign-infts.json"
+                success: false
+                error: "Too many requests"
         '404':
           description: Not Found
           content:
@@ -1469,17 +1463,8 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/Error' }
               example:
-                id: 1
-                slug: "unlocking-digital-identity-from-web2-to-sovereign-infts"
-                title: "Unlocking Digital Identity: From Web 2 Sign‑On to Sovereign iNFTs"
-                excerpt: "Digital identity is shifting from Big Tech‑controlled SSO to self‑sovereign, interoperable iNFTs."
-                category: "Identity"
-                tags: ["SSI", "DID", "iNFT", "Verifiable Credentials", "Web3"]
-                author: "TWN Labs Team"
-                date: "2025-01-20"
-                readTime: 10
-                image: "/assets/blog/pictures/DigitalIdentity_Evolution.webp"
-                file: "unlocking-digital-identity-from-web2-to-sovereign-infts.json"
+                success: false
+                error: "Too many requests"
         '404':
           description: Not Found
           content:
@@ -1647,9 +1632,8 @@ paths:
             Content-Length:
               description: File size in bytes
               schema: 
-                type: string
-                pattern: '^\\d+$'
-                example: "2458624"
+                type: integer
+                example: 2458624
             Content-Transfer-Encoding:
               description: Binary transfer encoding
               schema: 
