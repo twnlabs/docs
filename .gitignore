@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+._*
+
+# Logs
+*.log
+
+# Build artifacts
+/dist/
+/build/
+
+# IDE / Editor
+.idea/
+.vscode/
+*.code-workspace
+
+# Temp files
+~$*
+*.tmp
+*.bak
+*.swp
+

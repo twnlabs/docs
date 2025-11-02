@@ -1,0 +1,6 @@
+openapi: 3.0.3
+info:
+  title: TWN Labs Webhooks (Placeholder)
+  version: 0.0.1
+events: {}
+

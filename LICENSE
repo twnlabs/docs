@@ -1,0 +1,16 @@
+Primary License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+This documentation repository primarily uses CC BY 4.0 for documentation content (text, images, diagrams).
+
+Exceptions (per content type) are documented in LICENSE.md:
+- Code samples/scripts: MIT
+- Schemas/specifications (OpenAPI, JSON Schema): Apache-2.0
+
+Full license texts are provided in docs/LICENSES/:
+- CC-BY-4.0.txt
+- MIT.txt
+- Apache-2.0.txt
+
+Official CC BY 4.0 legal code:
+https://creativecommons.org/licenses/by/4.0/legalcode
+

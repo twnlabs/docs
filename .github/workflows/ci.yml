@@ -1,0 +1,54 @@
+name: docs-ci
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install CLI tools
+        run: |
+          npm i -g @redocly/cli @stoplight/spectral-cli markdown-link-check ajv-cli
+
+      - name: Lint OpenAPI (Redocly)
+        run: |
+          redocly lint docs/API/openapi.yaml
+
+      - name: Lint OpenAPI (Spectral)
+        run: |
+          spectral lint docs/API/openapi.yaml
+
+      - name: Check Markdown links
+        shell: bash
+        run: |
+          set -e
+          MD_FILES=$(git ls-files 'docs/**/*.md')
+          if [ -n "$MD_FILES" ]; then
+            for f in $MD_FILES; do
+              echo "Checking links in $f"
+              markdown-link-check -q "$f"
+            done
+          fi
+
+      - name: Optional JSON Schema compile (if any)
+        shell: bash
+        run: |
+          set -e
+          SCHEMAS=$(git ls-files 'docs/**/*.schema.json' | tr '\n' ' ' || true)
+          if [ -n "$SCHEMAS" ]; then
+            for s in $SCHEMAS; do
+              echo "Compiling schema $s"
+              ajv compile -s "$s"
+            done
+          else
+            echo "No JSON schemas found under docs/**.schema.json"
+          fi
+
