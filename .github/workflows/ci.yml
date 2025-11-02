@@ -20,17 +20,17 @@ jobs:
 
       - name: Lint OpenAPI (Redocly)
         run: |
-          redocly lint docs/API/openapi.yaml
+          redocly lint API/openapi.yaml
 
       - name: Lint OpenAPI (Spectral)
         run: |
-          spectral lint docs/API/openapi.yaml
+          spectral lint API/openapi.yaml
 
       - name: Check Markdown links
         shell: bash
         run: |
           set -e
-          MD_FILES=$(git ls-files 'docs/**/*.md')
+          MD_FILES=$(git ls-files '**/*.md')
           if [ -n "$MD_FILES" ]; then
             for f in $MD_FILES; do
               echo "Checking links in $f"
@@ -42,13 +42,13 @@ jobs:
         shell: bash
         run: |
           set -e
-          SCHEMAS=$(git ls-files 'docs/**/*.schema.json' | tr '\n' ' ' || true)
+          SCHEMAS=$(git ls-files '**/*.schema.json' | tr '\n' ' ' || true)
           if [ -n "$SCHEMAS" ]; then
             for s in $SCHEMAS; do
               echo "Compiling schema $s"
               ajv compile -s "$s"
             done
           else
-            echo "No JSON schemas found under docs/**.schema.json"
+            echo "No JSON schemas found under **.schema.json"
           fi
 
